@@ -88,7 +88,6 @@ for i in range(0,12):
     g.add_node(Node(sample_size[i]))
 
 edges = ['AG','AF','AI','BC','BH','BJ','CI','CK','DJ','DL','EG','EK','FH','FL','GL','JK']
-#edges = ['AB', 'AD', 'BC', 'BD', 'DE', 'EF', 'FC']
 
 for edge in edges:
     g.add_edge(edge[:1], edge[1:])
@@ -99,5 +98,5 @@ print(nodes)
 
 
 
-            
-        
+
+
