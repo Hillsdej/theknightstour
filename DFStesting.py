@@ -23,19 +23,22 @@ class Graph:
     nodes = {}
     #so we can find any node by its name
 
+    # def add_node(self, node):
     def add_node(self, node):
-        
+        #combine letters and numbers to make nodes
         #check it doesnt already exist in the dictionary
+        #for letter in letters add new node + number
         if node.name not in self.nodes:
             self.nodes[node.name] = node
             self.nodes[node.colour] = node
 
     def add_edge(self,u,v):
+        #needs the list of letters and numbers
+        #check if the node is in nodes, then calculate all the edges via the rules e.g. down1 left2, up2 right 1  
         if u in self.nodes and v in self.nodes:
             #adds v to u's list of edges and vice versa
             self.nodes[u].add_relation(v)
             self.nodes[v].add_relation(u)
-
 
     def print_graph(self):
         print("this is the graph")
@@ -80,23 +83,34 @@ g = Graph()
 ## a = Node('A')
 ## g.add_node(a)
 ## g.add_node(Node('B'))
+## g.add_node(Node('A1'))
 
 import string
 sample_size = list(string.ascii_uppercase) #gets a list of the alphabet characters in uppercase
+letters = []
+numbers = []
+for x in range(0,4):
+    letters.append(sample_size[x])
+    numbers.append(x+1)
 
-for i in range(0,12):
-    g.add_node(Node(sample_size[i]))
+counter = 0
 
-edges = ['AG','AF','AI','BC','BH','BJ','CI','CK','DJ','DL','EG','EK','FH','FL','GL','JK']
+while counter < 4: #letter
+    for y in range(0,4):
+        g.add_node(Node(letters[counter]+str(numbers[y])))
+    counter += 1
+ 
+#edges = ['AG','AF','AI','BC','BH','BJ','CI','CK','DJ','DL','EG','EK','FH','FL','GL','JK']
+    
+# for edge in edges:
+#     print(edge[:1], edge[1:])
+    # g.add_edge(edge[:1], edge[1:])
 
-for edge in edges:
-    g.add_edge(edge[:1], edge[1:])
-
-route = [] 
-nodes = g.dfs(1,route,g.nodes["A"],12)
-print(nodes)
-
-
-
+g.add_edge("B4","D3")
+g.add_edge("D3","B4")
+# route = [] 
+# nodes = g.dfs(1,route,g.nodes["A"],12)
+# print(nodes)
+g.print_graph()
 
 
