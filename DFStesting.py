@@ -17,7 +17,6 @@ class Node:
             self.related.append(n)
             self.related.sort()
 
-
 class Graph:
 
     nodes = {}
@@ -27,13 +26,10 @@ class Graph:
     def add_node(self, node):
         #combine letters and numbers to make nodes
         #check it doesnt already exist in the dictionary
-        #for letter in letters add new node + number
-        # if node.name != "A1" and node.name != "A4" and node.name != "D1" and node.name != "D4": use only if you need to prove it works
 
         if node.name not in self.nodes:
             self.nodes[node.name] = node
-            self.nodes[node.colour] = node
-        
+            #self.nodes[node.colour] = "white"
     
     def get_nodes(self):
         return sorted(list(self.nodes.keys()))
@@ -88,20 +84,27 @@ g = Graph()
 
 import string
 sample_size = list(string.ascii_uppercase) #gets a list of the alphabet characters in uppercase
-letters = []
-numbers = []
+# letters = []
+# numbers = []
 
-for x in range(0,4):
-    letters.append(sample_size[x])
-    numbers.append(x+1)
+#create graph nodes
+def createGraph(boardWidth):
 
-counter = 0
+    letters = []
+    numbers = []
 
-#add nodes
-while counter < 4: #letter (adjust to board size)
-    for y in range(0,4):
-        g.add_node(Node(letters[counter]+str(numbers[y])))
-    counter += 1
+    for x in range(0,boardWidth):
+        letters.append(sample_size[x])
+        numbers.append(x+1)
+
+    counter = 0
+
+    #add nodes
+    while counter < boardWidth: #letter (adjust to board size)
+        for y in range(0,boardWidth):
+            g.add_node(Node(letters[counter]+str(numbers[y])))
+        counter += 1
+    return letters
 
 #optimise this
 def downTwoLeftOne(lettersList, currentLetter, number):
@@ -185,33 +188,41 @@ def upOneRightTwo(lettersList, currentLetter, number):
     number += 1
     return newLetter+str(number)
 
-nodeList = g.get_nodes()
-
 #shorten this somehow
-for n in range(0, len(nodeList)-1):
-    if downTwoLeftOne(letters, nodeList[n][:1], int(nodeList[n][1:])) != False:
-        g.add_edge(nodeList[n], downTwoLeftOne(letters, nodeList[n][:1], int(nodeList[n][1:])))
-    if downTwoRightOne(letters, nodeList[n][:1], int(nodeList[n][1:])) != False:
-        g.add_edge(nodeList[n], downTwoRightOne(letters, nodeList[n][:1], int(nodeList[n][1:])))
-    if downOneLeftTwo(letters, nodeList[n][:1], int(nodeList[n][1:])) != False:
-        g.add_edge(nodeList[n], downOneLeftTwo(letters, nodeList[n][:1], int(nodeList[n][1:])))
-    if downOneRightTwo(letters, nodeList[n][:1], int(nodeList[n][1:])) != False:
-        g.add_edge(nodeList[n], downOneRightTwo(letters, nodeList[n][:1], int(nodeList[n][1:])))
-   
-    if upTwoLeftOne(letters, nodeList[n][:1], int(nodeList[n][1:])) != False:
-        g.add_edge(nodeList[n], upTwoLeftOne(letters, nodeList[n][:1], int(nodeList[n][1:])))
-    if upTwoRightOne(letters, nodeList[n][:1], int(nodeList[n][1:])) != False:
-        g.add_edge(nodeList[n], upTwoRightOne(letters, nodeList[n][:1], int(nodeList[n][1:])))
-    if upOneLeftTwo(letters, nodeList[n][:1], int(nodeList[n][1:])) != False:
-        g.add_edge(nodeList[n], upOneLeftTwo(letters, nodeList[n][:1], int(nodeList[n][1:])))
-    if upOneRightTwo(letters, nodeList[n][:1], int(nodeList[n][1:])) != False:
-        g.add_edge(nodeList[n], upOneRightTwo(letters, nodeList[n][:1], int(nodeList[n][1:])))
+def make_edges(nodeList, letters):
+
+    for n in range(0, len(nodeList)-1):
+        if downTwoLeftOne(letters, nodeList[n][:1], int(nodeList[n][1:])) != False:
+            g.add_edge(nodeList[n], downTwoLeftOne(letters, nodeList[n][:1], int(nodeList[n][1:])))
+        if downTwoRightOne(letters, nodeList[n][:1], int(nodeList[n][1:])) != False:
+            g.add_edge(nodeList[n], downTwoRightOne(letters, nodeList[n][:1], int(nodeList[n][1:])))
+        if downOneLeftTwo(letters, nodeList[n][:1], int(nodeList[n][1:])) != False:
+            g.add_edge(nodeList[n], downOneLeftTwo(letters, nodeList[n][:1], int(nodeList[n][1:])))
+        if downOneRightTwo(letters, nodeList[n][:1], int(nodeList[n][1:])) != False:
+            g.add_edge(nodeList[n], downOneRightTwo(letters, nodeList[n][:1], int(nodeList[n][1:])))
+    
+        if upTwoLeftOne(letters, nodeList[n][:1], int(nodeList[n][1:])) != False:
+            g.add_edge(nodeList[n], upTwoLeftOne(letters, nodeList[n][:1], int(nodeList[n][1:])))
+        if upTwoRightOne(letters, nodeList[n][:1], int(nodeList[n][1:])) != False:
+            g.add_edge(nodeList[n], upTwoRightOne(letters, nodeList[n][:1], int(nodeList[n][1:])))
+        if upOneLeftTwo(letters, nodeList[n][:1], int(nodeList[n][1:])) != False:
+            g.add_edge(nodeList[n], upOneLeftTwo(letters, nodeList[n][:1], int(nodeList[n][1:])))
+        if upOneRightTwo(letters, nodeList[n][:1], int(nodeList[n][1:])) != False:
+            g.add_edge(nodeList[n], upOneRightTwo(letters, nodeList[n][:1], int(nodeList[n][1:])))
 
 g.print_graph() #figure out how to get rid of the white key
 route = [] 
-nodes = g.dfs(1,route,g.nodes["A1"],16) # eventually change them to variables such as start node and number of nodes/size of board
-print(nodes) 
-
-
-
-
+boards = [8] #so far it can't loop through
+boardCounter = 0
+# while boardCounter < len(boards):
+lettersList = createGraph(boards[boardCounter])
+nodeList = g.get_nodes()
+make_edges(nodeList, lettersList)
+g.print_graph()
+nodes = g.dfs(1,route,g.nodes["A1"],boards[boardCounter]*boards[boardCounter])
+nodeList = []
+print(nodes)
+# for node in g.nodes:
+#     print("this is the node's colour: " + str(Node(node).colour))        
+    #sNode(node).colour = "white"
+#boardCounter += 1
