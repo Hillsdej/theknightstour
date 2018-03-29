@@ -212,7 +212,7 @@ def make_edges(nodeList, letters):
 
 g.print_graph() #figure out how to get rid of the white key
 route = [] 
-boards = [8] #so far it can't loop through
+boards = [5] #so far it can't loop through
 boardCounter = 0
 # while boardCounter < len(boards):
 lettersList = createGraph(boards[boardCounter])
