@@ -1,8 +1,4 @@
-# import time
-# start = time.time()
-# end = time.time()
-# print(end - start)
-
+import time
 class Node:
 
     def __init__(self, n):
@@ -219,9 +215,13 @@ lettersList = createGraph(boards[boardCounter])
 nodeList = g.get_nodes()
 make_edges(nodeList, lettersList)
 g.print_graph()
+start = time.time()
 nodes = g.dfs(1,route,g.nodes["A1"],boards[boardCounter]*boards[boardCounter])
+end = time.time()
+print(">>>>>>>>>>>>>>this is the time taken: " + str(end - start))
 nodeList = []
 print(nodes)
+
 # for node in g.nodes:
 #     print("this is the node's colour: " + str(Node(node).colour))        
     #sNode(node).colour = "white"
