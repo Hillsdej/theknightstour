@@ -74,8 +74,7 @@ class Graph:
                 x += 1
       
         return done
-
-    
+       
 g = Graph()
 
 import string
@@ -215,12 +214,16 @@ lettersList = createGraph(boards[boardCounter])
 nodeList = g.get_nodes()
 make_edges(nodeList, lettersList)
 g.print_graph()
-start = time.time()
-nodes = g.dfs(1,route,g.nodes["A1"],boards[boardCounter]*boards[boardCounter])
-end = time.time()
-print(">>>>>>>>>>>>>>this is the time taken: " + str(end - start))
-nodeList = []
-print(nodes)
+# start = time.time()
+# nodes = g.dfs(1,route,g.nodes["A1"],boards[boardCounter]*boards[boardCounter])
+# end = time.time()
+# print(">>>>>>>>>>>>>>this is the time taken: " + str(end - start))
+# nodeList = []
+# print(nodes)
+
+nodes = g.bfs(g.nodes["A1"])
+for i in nodes:
+    print(i.name)
 
 # for node in g.nodes:
 #     print("this is the node's colour: " + str(Node(node).colour))        
