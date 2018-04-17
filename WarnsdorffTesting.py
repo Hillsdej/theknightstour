@@ -48,14 +48,25 @@ class Graph:
 
     def dfs(self, n, route, u, limit):
         u.colour = "gray"
-        print("-----This is U: " + u.name)
-        print("THIS IS THE DEGREE OF U: " + str(u.degree))
+        print("-----------This is U: " + u.name)
+        # print("THIS IS THE DEGREE OF U: " + str(u.degree))
         route.append(u)
         #print(u.name + " ------------------")
         if n < limit:
             connected = []
             for i in u.related:
                 connected.append(g.nodes[i])
+                print("name: " + g.nodes[i].name + " deg: " + str(g.nodes[i].degree))
+            
+            print("before sorting")
+            for i in connected:
+                print(i.name)
+            
+            connected.sort(key=lambda x: x.degree)
+            
+            print("after sorting")
+            for i in connected:
+                print(i.name)
                 #This shows me the number of possible moves (degree) of each node related to i
                 #Can then re-order them in terms of length
          #       print("THIS IS I: " + str(g.nodes[i].name))
@@ -224,7 +235,7 @@ nodeList = g.get_nodes()
 make_edges(nodeList, lettersList)
 g.print_graph()
 start = time.time()
-nodes = g.dfs(1,route,g.nodes["A1"],boards[boardCounter]*boards[boardCounter])
+nodes = g.dfs(1,route,g.nodes["D4"],boards[boardCounter]*boards[boardCounter])
 end = time.time()
 print(">this is the time taken: " + str(end - start))
 nodeList = []
