@@ -5,6 +5,7 @@ class Node:
 
         self.name = n
         self.related = []
+        self.degree = 0
         self.colour = "white"
 
     def add_relation(self, n):
@@ -12,6 +13,7 @@ class Node:
             #appends the node to the related list and sorts it
             self.related.append(n)
             self.related.sort()
+            self.degree += 1
 
 class Graph:
 
@@ -46,17 +48,19 @@ class Graph:
 
     def dfs(self, n, route, u, limit):
         u.colour = "gray"
+        print("-----This is U: " + u.name)
+        print("THIS IS THE DEGREE OF U: " + str(u.degree))
         route.append(u)
-        print(u.name + " ------------------")
+        #print(u.name + " ------------------")
         if n < limit:
             connected = []
             for i in u.related:
                 connected.append(g.nodes[i])
                 #This shows me the number of possible moves (degree) of each node related to i
                 #Can then re-order them in terms of length
-                print("THIS IS I: " + str(g.nodes[i].name))
-                print(str(g.nodes[i].related))
-                print("This IS NUMBER OF RELATED TO I: " + str(len(g.nodes[i].related)))
+         #       print("THIS IS I: " + str(g.nodes[i].name))
+          #      print(str(g.nodes[i].related))
+           #     print("This IS NUMBER OF RELATED TO I: " + str(len(g.nodes[i].related)))
   
             i = 0
             done = False
