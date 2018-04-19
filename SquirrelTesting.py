@@ -50,9 +50,6 @@ class Graph:
         if depth > 1:
             return
         
-        
-        #print("THIS IS THE STARTX: " + str(startX) + " THIS IS THE STARTY: " + str(startY))
-        
         check = dict()
         check[1]= upTwoRightOne(startX,startY)
         check[2]= upOneRightTwo(startX,startY)
@@ -65,12 +62,7 @@ class Graph:
         
         if depth == 0:
             self.add_edge(startX, startY, 1)
-        
-        #related = [] 
-        #related = []
-        #print("STARTx: " + str(startX) + " STARTy: " + str(startY))
-        #print("CHECK: " + str(check))
-        #number of things in check which arent None
+      
         loopCounter = 1
         degree = 0
         
@@ -78,36 +70,33 @@ class Graph:
         
         while loopCounter <= len(check):
             if check[loopCounter] != None:
-                #if depth == 1:
-                #related.append(check[loopCounter])
                 degree += 1
                 self.warnsfdorff(check[loopCounter]["startX"], check[loopCounter]["startY"], depth+1)
-                #related[1]={(check[loopCounter]["startX"], check[loopCounter]["startY"]):degree}
-                #print("-----------------------------------this is the related list" + str(related))
             loopCounter += 1
         
+        
         print("STARTx: " + str(startX) + " STARTy: " + str(startY) + " ---- THIS IS THE DEGREE: " + str(degree))
-        #related[]
-        #print("-----------------------")
-        #print("Check again: " +str(check))
+        
         if (startX,startY) not in self.visited:
-            self.related.append({"startX":startX, "startY":startY, "degree":degree})
-        print(str(self.visited))
-        print(check)
-        print("this is related" + str(self.related))
-        print(str(len(self.visited)))
+            self.related.append({"startX":startX, "startY":startY, "degree":degree}) #need moveType in here
+        
+        for i in check:
+            if check[i] != None:
+                for j in range(0, len(self.related)):
+                    if check[i]["startX"] == self.related[j]["startX"] and check[i]["startY"] == self.related[j]["startY"]:
+                        self.related[j]["moveType"]=check[i]["moveType"]
+        
+        print(self.related)
+        #self.related.sort()
+        #sorted(self.related, key=lambda d: d['degree'])
+        #print(str(len(self.visited)))
         #now sort by degree and then pick the first one with the lowest degree and mark as visited
         #need a base case if length of visited != 63 and if visited startX and startY aren't in visited
-        
+        #actually dont need to return the moveType as the key of check is already the moveType
         
 
 g = Graph()
 
-##a = Node('A')
-##g.add_node(Node('A'))
-##g.add_node(Node('B'))
-import string
-sample_size = list(string.ascii_uppercase) #gets a list of the alphabet characters in uppercase
 for i in range(0,8):
     g.add_node(Node(i))
 
@@ -115,86 +104,90 @@ for i in range(0,8):
 
 #moveType 1
 def upTwoRightOne(u, v):
-    isVisited = (u, v)
-    if isVisited not in g.visited:
-        if u < 7 and v > 1:
-            if (u+1, v-2) not in g.visited:
-            #g.add_edge(u+1, v-2, weight)
-                return {"startX":u+1, "startY":v-2}
+    # isVisited = (u, v)
+    # if isVisited not in g.visited:
+    if u < 7 and v > 1:
+        if (u+1, v-2) not in g.visited:
+        #g.add_edge(u+1, v-2, weight)
+            return {"startX":u+1, "startY":v-2, "moveType":1}
     return None
 
 #moveType 2
 def upOneRightTwo(u, v):
-    isVisited = (u, v)
-    if isVisited not in g.visited:
-        if u < 6 and v > 0:
-            if (u+2, v-1) not in g.visited:
+    #isVisited = (u, v)
+    #if isVisited not in g.visited:
+    if u < 6 and v > 0:
+        if (u+2, v-1) not in g.visited:
                 #g.add_edge(u+2, v-1, weight)
-                return {"startX":u+2, "startY":v-1}
+            return {"startX":u+2, "startY":v-1, "moveType":2}
     return None
     
 
 #moveType 3
 def downOneRightTwo(u, v):
-    isVisited = (u, v)
-    if isVisited not in g.visited:
-        if u < 6 and v < 7:
-            if (u+2,v+1) not in g.visited:
-            #g.add_edge(u+2, v+1, weight)
-                return {"startX":u+2, "startY":v+1}
+    # isVisited = (u, v)
+    # if isVisited not in g.visited:
+    if u < 6 and v < 7:
+        if (u+2,v+1) not in g.visited:
+        #g.add_edge(u+2, v+1, weight)
+            return {"startX":u+2, "startY":v+1, "moveType":3}
     return None
     
 #moveType 4
 def downTwoRightOne(u, v):
-    isVisited = (u, v)
-    if isVisited not in g.visited:
-        if u < 7 and v < 6:
-            if (u+1, v+2) not in g.visited:
-                return {"startX":u+1, "startY":v+2}
+    # isVisited = (u, v)
+    # if isVisited not in g.visited:
+    if u < 7 and v < 6:
+        if (u+1, v+2) not in g.visited:
+            return {"startX":u+1, "startY":v+2, "moveType":4}
     return None
 
 #moveType 5
 def downTwoLeftOne(u, v):
-    isVisited = (u, v)
-    if isVisited not in g.visited:
-        if u > 0 and v < 6:
-            if (u-1, v+2) not in g.visited:
-            #g.add_edge(u-1, v+2, weight)
-                return {"startX":u-1, "startY": v+2}
+    # isVisited = (u, v)
+    # #print("entered")
+    # if isVisited not in g.visited:
+        #print("entered next level")
+    if u > 0 and v < 6:
+        #print("entered NEXT NEXT LVL")
+        if (u-1, v+2) not in g.visited:
+        #g.add_edge(u-1, v+2, weight)
+            #print("------------------------------------")
+            return {"startX":u-1, "startY": v+2, "moveType":5}
     return None
         
 #moveType 6
 def downOneLeftTwo(u, v):
-    isVisited = (u, v)
-    if isVisited not in g.visited:
-        if u > 1 and v < 7:
-            if (u-2, v+1) not in g.visited:
-            #g.add_edge(u-2, v+1, weight)
-                return {"startX":u-2, "startY":v+1}
+    # isVisited = (u, v)
+    # if isVisited not in g.visited:
+    if u > 1 and v < 7:
+        if (u-2, v+1) not in g.visited:
+        #g.add_edge(u-2, v+1, weight)
+            return {"startX":u-2, "startY":v+1, "moveType":6}
     return None
         
 #moveType 7
 def upOneLeftTwo(u, v):
-    isVisited = (u, v)
-    if isVisited not in g.visited:
-        if u > 1 and v > 0:
-            if (u-2, v-1) not in g.visited:
-            #g.add_edge(u-2, v-1, weight)
-                return {"startX":u-2, "startY":v-1}
+    # isVisited = (u, v)
+    # if isVisited not in g.visited:
+    if u > 1 and v > 0:
+        if (u-2, v-1) not in g.visited:
+        #g.add_edge(u-2, v-1, weight)
+            return {"startX":u-2, "startY":v-1, "moveType":7}
     return None
 
 #moveType 8
 def upTwoLeftOne(u, v):
-    isVisited = (u, v)
-    if isVisited not in g.visited:
-        if u > 0 and v > 1:
-            if (u-1, v-2) not in g.visited:
-            #g.add_edge(u-1, v-2, weight)
-                return {"startX":u-1, "startY":v-2}
+    # isVisited = (u, v)
+    # if isVisited not in g.visited:
+    if u > 0 and v > 1:
+        if (u-1, v-2) not in g.visited:
+        #g.add_edge(u-1, v-2, weight)
+            return {"startX":u-1, "startY":v-2, "moveType":8}
     return None
 
 
-g.warnsfdorff(0,0)
+g.warnsfdorff(1,0)
 g.print_graph()
 #need a way to count legal moves and know what your starting square is
 #and check if visited
