@@ -278,6 +278,6 @@ def bubbleSort(array):
     return array
     
 g.print_graph()
-g.warnsfdorff(0,0)
+g.warnsfdorff(3,3)
 g.print_graph()
 
