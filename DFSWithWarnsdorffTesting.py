@@ -5,6 +5,7 @@ class Node:
 
         self.name = n
         self.related = []
+        self.degree = 0
         self.colour = "white"
 
     def add_relation(self, n):
@@ -12,6 +13,7 @@ class Node:
             #appends the node to the related list and sorts it
             self.related.append(n)
             self.related.sort()
+            self.degree += 1
 
 class Graph:
 
@@ -47,19 +49,11 @@ class Graph:
     def dfs(self, n, route, u, limit):
         u.colour = "gray"
         route.append(u)
-        #print(u.name + " ------------------")
         if n < limit:
-            connected = []
-            for i in u.related:
-                connected.append(g.nodes[i])
-                #This shows me the number of possible moves (degree) of each node related to i
-                #Can then re-order them in terms of length
-                # print("THIS IS I: " + str(g.nodes[i].name))
-                # print(str(g.nodes[i].related))
-                # print("This IS NUMBER OF RELATED TO I: " + str(len(g.nodes[i].related)))
-  
+            connected = self.warnsdorff(u)
             i = 0
             done = False
+        
 
             while i < len(connected) and not done:
                 if connected[i].colour == "white":
@@ -79,6 +73,13 @@ class Graph:
                 x += 1
       
         return done
+    
+    def warnsdorff(self, u):
+        connected = []
+        for i in u.related:
+            connected.append(g.nodes[i]) 
+        connected.sort(key=lambda x: x.degree) 
+        return connected
        
 g = Graph()
 
@@ -210,9 +211,8 @@ def make_edges(nodeList, letters):
         if upOneRightTwo(letters, nodeList[n][:1], int(nodeList[n][1:])) != False:
             g.add_edge(nodeList[n], upOneRightTwo(letters, nodeList[n][:1], int(nodeList[n][1:])))
 
-g.print_graph() #figure out how to get rid of the white key
 route = [] 
-boards = [5] #so far it can't loop through
+boards = [8] #so far it can't loop through
 boardCounter = 0
 # while boardCounter < len(boards):
 lettersList = createGraph(boards[boardCounter])
@@ -220,17 +220,8 @@ nodeList = g.get_nodes()
 make_edges(nodeList, lettersList)
 g.print_graph()
 start = time.time()
-nodes = g.dfs(1,route,g.nodes["D4"],boards[boardCounter]*boards[boardCounter])
+nodes = g.dfs(1,route,g.nodes["A1"],boards[boardCounter]*boards[boardCounter])
 end = time.time()
 print(">this is the time taken: " + str(end - start))
 nodeList = []
 print(nodes)
-
-#nodes = g.bfs(g.nodes["A1"])
-#for i in nodes:
- #   print(i.name)
-
-# for node in g.nodes:
-#     print("this is the node's colour: " + str(Node(node).colour))        
-    #sNode(node).colour = "white"
-#boardCounter += 1
