@@ -7,12 +7,12 @@ class Graph:
     
     nodes = {}      # used to find a node by its label
     matrix = []     # contains 2D array of edges
-    edge_index = {} # used to check the index of an edge given its label
+    edge_index = {} # used to knightMovesDict the index of an edge given its label
     visited = []
     related = []
     
     def add_node(self, node):
-        #first check if it is a node and not in the node list
+        #first knightMovesDict if it is a node and not in the node list
         #if not then you add it to the dictionary of nodes
         
         if node.label not in self.nodes:
@@ -26,7 +26,7 @@ class Graph:
             return False
             
     def add_edge(self,u, v, weight):
-        #check to see if nodes u and v are in the node dictionary
+        #knightMovesDict to see if nodes u and v are in the node dictionary
         if u in self.nodes and v in self.nodes:
             #self.matrix[self.edge_index[u]][self.edge_index[v]] = weight
             self.matrix[self.edge_index[v]][self.edge_index[u]] = weight
@@ -37,6 +37,7 @@ class Graph:
         (u,v) changes to store a 1
         (v,u) changes to store a 1
         """
+    
     def print_graph(self):
         print("  01234567")
         for v, i in sorted(self.edge_index.items()):
@@ -45,56 +46,118 @@ class Graph:
                 print(self.matrix[i][j], end='')
             print(' ')
     
-    def warnsfdorff(self,startX,startY,depth=0):
+    def countAvailableMoves(self, array):
+        counter = 0
+        print("entering counter")
+        print(len(array))
+        i = 1
         
-        if depth > 1:
-            return
+        print("this is the visited list >>>>>> " + str(self.visited))
         
-        check = dict()
-        check[1]= upTwoRightOne(startX,startY)
-        check[2]= upOneRightTwo(startX,startY)
-        check[3]= downOneRightTwo(startX,startY)
-        check[4]= downTwoRightOne(startX,startY)
-        check[5]= downTwoLeftOne(startX,startY)
-        check[6]= downOneLeftTwo(startX,startY)
-        check[7]= upOneLeftTwo(startX,startY)
-        check[8]= upTwoLeftOne(startX,startY)
+        while i <= len(array):
+            if array[i] != None:
+              if (array[i]["startX"], array[i]["startY"]) not in self.visited:
+                 counter += 1
+                 i += 1
+            else:
+                 i += 1
+            
+        
+        # for i in range(1, len(array)):
+        #     print(str(i))
+        #     if array[i] != None:
+        #         if (array[i]["startX"], array[i]["startY"]) not in self.visited:
+        #             counter += 1
+        
+        print("this is the array:" + str(array))
+        print("this is the counter: " + str(counter))
+        return counter
+    
+    def warnsfdorff(self,startX,startY,depth=0, moveType = None):
+        print("----------------------------------------------------------------")
+        print("THIS IS STARTx >>> " + str(startX))
+        print("")
+        print("THIS IS STARTy >>> " + str(startY))
+        print("")
+        print("THIS IS THE DEPTH: " + str(depth))
+        print("")
         
         if depth == 0:
-            self.add_edge(startX, startY, 1)
+            self.add_edge(startX,startY,1)
+        
+        if len(self.visited)>=4:
+            return self.visited
+            
+        knightMovesDict = dict()
+        knightMovesDict[1]= upTwoRightOne(startX,startY)
+        knightMovesDict[2]= upOneRightTwo(startX,startY)
+        knightMovesDict[3]= downOneRightTwo(startX,startY)
+        knightMovesDict[4]= downTwoRightOne(startX,startY)
+        knightMovesDict[5]= downTwoLeftOne(startX,startY)
+        knightMovesDict[6]= downOneLeftTwo(startX,startY)
+        knightMovesDict[7]= upOneLeftTwo(startX,startY)
+        knightMovesDict[8]= upTwoLeftOne(startX,startY)
+        
+        print("KMD: " + str(knightMovesDict))
+        print("")
+        
+        # if depth == 0 and (startX, startY) not in self.related:
+        #     self.add_edge(startX, startY, 1)
       
-        loopCounter = 1
-        degree = 0
+        kmdCounter = 1
         
-        #list of next available moves in order of their degree
+        print("THIS IS THE KMD COUNTER: " + str(kmdCounter))
         
-        while loopCounter <= len(check):
-            if check[loopCounter] != None:
-                degree += 1
-                self.warnsfdorff(check[loopCounter]["startX"], check[loopCounter]["startY"], depth+1)
-            loopCounter += 1
+        while kmdCounter < len(knightMovesDict):
+            #x=2 y=1
+            if knightMovesDict[kmdCounter] != None:
+                adjacentNodeX = knightMovesDict[kmdCounter]["startX"]
+                adjacentNodeY = knightMovesDict[kmdCounter]["startY"]
+                
+                print(" ")
+                print("THIS IS THE NEXT X: " + (str(adjacentNodeX)))
+                print("THIS IS THE NEXT Y: " + (str(adjacentNodeY)))
+                print(" ")
+                
+                if depth == 1:
+                    print("ENTERING IF")
+                    print("")
+                     
+                    numberAvailableMoves = self.countAvailableMoves(knightMovesDict) #2,1
+                    print("THIS IS THE NUMBER OF AVAILABLE MOVES (IN IF): " + str(numberAvailableMoves))
+                    print("")
+                    
+                    self.related.append({"startX":startX, "startY":startY, "degree":numberAvailableMoves, "moveType":moveType})#move type might be different
+                    print("This is the numberAvailableMoves: " + str(numberAvailableMoves))
+                    print("")
+                    print("THIS IS THE RELATED LIST: " + str(self.related))
+                    print(str(len(self.related)))
+                    return
+                    
+                else:
+                    print("")
+                    print("ENTERING ELSE")
+                    print("THIS IS STARTx <<< " + str(startX))
+                    print("THIS IS STARTy <<< " + str(startY))
+                    print(str(self.related))
+                    
+                    print("")
+                    self.warnsfdorff(adjacentNodeX, adjacentNodeY, depth+1, moveType = knightMovesDict[kmdCounter]["moveType"]) #goes back here
+                    print("")
+                    kmdCounter += 1
+                
+            else:
+                kmdCounter += 1
         
+        #basically I need a base case to check 
+        #if the length of the self.related list is
+        #big enough or if its finished looping recursively
+        #then after ive stopped the recursive bit
+        #I then need to call this
+        print("This is the sorted list")
+        print(bubbleSort(self.related))
+        print("")
         
-        print("STARTx: " + str(startX) + " STARTy: " + str(startY) + " ---- THIS IS THE DEGREE: " + str(degree))
-        
-        if (startX,startY) not in self.visited:
-            self.related.append({"startX":startX, "startY":startY, "degree":degree}) #need moveType in here
-        
-        for i in check:
-            if check[i] != None:
-                for j in range(0, len(self.related)):
-                    if check[i]["startX"] == self.related[j]["startX"] and check[i]["startY"] == self.related[j]["startY"]:
-                        self.related[j]["moveType"]=check[i]["moveType"]
-        
-        print(self.related)
-        #self.related.sort()
-        #sorted(self.related, key=lambda d: d['degree'])
-        #print(str(len(self.visited)))
-        #now sort by degree and then pick the first one with the lowest degree and mark as visited
-        #need a base case if length of visited != 63 and if visited startX and startY aren't in visited
-        #actually dont need to return the moveType as the key of check is already the moveType
-        
-
 g = Graph()
 
 for i in range(0,8):
@@ -186,10 +249,31 @@ def upTwoLeftOne(u, v):
             return {"startX":u-1, "startY":v-2, "moveType":8}
     return None
 
-
-g.warnsfdorff(1,0)
+def bubbleSort(array):
+    
+    if len(array)<=1:
+        return array
+    
+    notSorted = True
+    
+    while notSorted == True:
+        
+        notSorted = False
+        
+        for i in range(0,len(array)-1):
+            
+            if array[i]["degree"] > array[i+1]["degree"]:
+                array[i], array[i+1] =  array[i+1], array[i]
+                notSorted = True
+    
+    return array  
+            
+#g.add_edge(2,1,1)
 g.print_graph()
+g.warnsfdorff(2,1)
+g.print_graph()
+#print(bubbleSort(g.related))
 #need a way to count legal moves and know what your starting square is
-#and check if visited
+#and knightMovesDict if visited
 #assign numbers to the directions
 
