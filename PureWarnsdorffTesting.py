@@ -40,7 +40,7 @@ class Graph:
     
     def print_graph(self):
         #print("  01234567")
-        print("<<<<<<<<<< Knight Tour >>>>>>>>>>>")
+        print("<<<<<<<<<< Knight Tour WARNSDORFF >>>>>>>>>>>")
         print("")
         singleNums = [0,1,2,3,4,5,6,7,8,9]
         for v, i in sorted(self.edge_index.items()):
@@ -87,7 +87,7 @@ class Graph:
         if depth == 0:
             self.add_edge(startX,startY,self.pathNum)
         
-        if len(self.visited)>63: #hardcoded for 8by8 board
+        if len(self.visited)>64: #hardcoded for 8by8 board
             return self.visited
             
         knightMovesDict = dict()
@@ -154,7 +154,7 @@ class Graph:
         
         sortedRelated = bubbleSort(self.related)
         print(sortedRelated)
-        self.print_graph()
+        #self.print_graph()
         relatedCounter = 0
         while relatedCounter < len(sortedRelated):
             nextX = sortedRelated[relatedCounter]["startX"]
@@ -277,7 +277,7 @@ def bubbleSort(array):
     
     return array
     
+#g.print_graph()
+g.warnsfdorff(0,0)
 g.print_graph()
-g.warnsfdorff(3,3)
-g.print_graph()
-
+print(str(g.visited))
