@@ -212,7 +212,7 @@ def make_edges(nodeList, letters):
 
 g.print_graph() #figure out how to get rid of the white key
 route = [] 
-boards = [5] #so far it can't loop through
+boards = [8] #so far it can't loop through
 boardCounter = 0
 # while boardCounter < len(boards):
 lettersList = createGraph(boards[boardCounter])
@@ -220,7 +220,7 @@ nodeList = g.get_nodes()
 make_edges(nodeList, lettersList)
 g.print_graph()
 start = time.time()
-nodes = g.dfs(1,route,g.nodes["D4"],boards[boardCounter]*boards[boardCounter])
+nodes = g.dfs(1,route,g.nodes["B2"],boards[boardCounter]*boards[boardCounter])
 end = time.time()
 print(">this is the time taken: " + str(end - start))
 nodeList = []
