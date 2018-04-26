@@ -13,8 +13,8 @@ class Graph:
     visited = []
     related = []
     pathNum = 1
-    rowLength = 6
-    columnLength = 6
+    rowLength = 8
+    columnLength = 8
     
     def add_node(self, node):
         #first knightMovesDict if it is a node and not in the node list
