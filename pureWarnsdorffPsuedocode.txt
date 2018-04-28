@@ -1,0 +1,51 @@
+related <- []
+visited <- []
+pathNumber <- 1
+
+PUREWARNSDORFF(startX, startY, depth <- 0, moveType <- NONE)
+
+    IF depth = 0
+        add edge to graph from (startX, startY) and append to visited
+
+    IF length of visited nodes <= number of squares on the board
+        KnightMoves <- {}
+        check all moveTypes from (startX, startY) and add to KnightMoves dictionary
+        
+        kmdCounter <- 1
+
+        WHILE kmdCounter <= length of KnightMoves
+            IF the element at index kmdCounter in the KnightMoves is NOT NONE
+                adjacentX <- startX value of element at index kmdCounter in knightMoves
+                adjacentY <- startY value of element at index kmdCounter in knightMoves
+                adjacentMoveType <- moveType value of element at index kmdCounter in knightMoves
+                If depth = 1
+                    count available knight moves
+                    RETURN
+                ELSE
+                    WARNSDORFF(adjacentX, adjacentY, depth+1, moveType = adjacentMoveType) 
+                    kmdCounter + 1
+            ELSE
+                kmdCounter + 1
+        
+        sortRelated <- sort list of nodes related to startX and startY in order of their degree
+        relatedCounter <- 0
+
+        WHILE relatedCounter < length of sortRelated
+            nextX <- startX value of element at index relatedCounter in sortRelated
+            nextY <- startY value of element at index relatedCounter in sortRelated
+            IF nextX and nextY are NOT IN the visited list
+                related <- []
+                pathNumber + 1
+                WARNSDORFF(nextX,nextY)
+            ELSE
+                relatedCounter + 1
+        
+        RETURN visited
+
+
+            
+
+            
+
+            
+

@@ -2,10 +2,7 @@ DFSWithBacktrack(n, route, u, limit)
     set colour of u to gray
     append u to the route
     IF n < limit
-        connected <- []
-        FOR each node in the array of nodes related to u
-            append node to connected
-        
+        connected <- WARNSDORFF(u)
         i <- 0
         done <- FALSE
 
@@ -24,8 +21,11 @@ DFSWithBacktrack(n, route, u, limit)
         
     RETURN done
 
-
-
-
-
+WARNSDORFF(u)
+    connected <- []
+    FOR each node related to u
+        append node to connected
+    
+    SORT connected in order of each node's degree
+    RETURN connected
 
